@@ -56,6 +56,45 @@ int KeypadSMTick(int state) {
 	return state;
 }
 
+const unsigned char phrase[] = "CS120B is Legend... wait for it DARY!";
+unsigned char column, num;
+
+enum DisplayPhraseStates{D_Display};
+int DisplayPhraseSMTick(int state) {
+        switch(state) {
+                case D_Display:
+                        break;
+                default:
+			column = 32;
+                        num = 0;
+                        LCD_ClearScreen();
+                        state = D_Display;
+                        break;
+        }
+        switch(state) {
+                case D_Display:
+                        if(column > 0) {
+                                LCD_DisplayString(column, &phrase[0]);
+                                column--;
+                        }
+                        else {
+                                if(num < 36) {
+                                        num++;
+                                        LCD_DisplayString(0, &phrase[num]);
+                                }
+                                else {
+                                        column = 32;
+                                        num = 0;
+                                        LCD_ClearScreen();
+                                }
+                        }
+                        break;
+                default:
+                        break;
+        }
+	return state;
+}
+
 int main(void){
 	DDRC = 0x00; PORTC = 0xFF;
         DDRB = 0xFF; PORTB = 0x00;
@@ -69,6 +108,11 @@ int main(void){
 	task1.period = 50;
 	task1.elapsedTime = task1.period;
 	task1.TickFct = &KeypadSMTick;
+
+	task2.state = -1;
+        task2.period = 300;
+        task2.elapsedTime = task2.period;
+        task2.TickFct = &DisplayPhraseSMTick;
 
 	TimerSet(50);
 	TimerOn();
