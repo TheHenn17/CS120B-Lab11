@@ -21,6 +21,8 @@
 #include "seven_seg.h"
 #include "stack.h"
 
+//Demo: https://drive.google.com/open?id=1GktyGAJ-CF-1QNAzvPXEflayEDsIigpP
+
 unsigned char input, data;
 
 enum KeypadStates{K_Wait, K_Retrieve};

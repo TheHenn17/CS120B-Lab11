@@ -21,6 +21,8 @@
 #include "seven_seg.h"
 #include "stack.h"
 
+//Demo: https://drive.google.com/open?id=1GktyGAJ-CF-1QNAzvPXEflayEDsIigpP
+
 const unsigned char phrase[] = "CS120B is Legend... wait for it DARY!";
 unsigned char column, num;
 
