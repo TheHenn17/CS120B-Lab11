@@ -45,7 +45,7 @@ void Write7Seg(unsigned char c) {
 	
 	// Match your port and pin numbers:
 	
-	static unsigned char *sevenSeg_Port			= &PORTC;	// Seven segment port
+	static unsigned char *sevenSeg_Port			= &PORTB;	// Seven segment port
 	static const unsigned char sevenSeg_A		= 2; 		// Pin for segment A
 	static const unsigned char sevenSeg_B		= 3; 		// Pin for segment B
 	static const unsigned char sevenSeg_C		= 6; 		// Pin for segment C
