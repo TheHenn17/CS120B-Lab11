@@ -31,7 +31,7 @@ int KeypadSMTick(int state) {
 				state = K_Wait;
 				break;
 			}
-			else if(input != '\0') {
+			else {
 				state = K_Retrieve;
 				break;
 			}
@@ -40,7 +40,7 @@ int KeypadSMTick(int state) {
 			break;
 		default:
 			state = K_Wait;
-			input = '\0';
+			input = data = '\0';
 			break;
 	}
 	switch(state) {
@@ -56,8 +56,46 @@ int KeypadSMTick(int state) {
 	return state;
 }
 
+enum DisplayDataStates{D_Display};
+int DisplayDataSMTick(int state) {
+	switch(state) {
+		case D_Display:
+			break;
+		default:
+			state = D_Display;
+			break;
+	}
+	switch(state) {
+		case D_Display:
+			switch (data) {	
+				case '\0': PORTB = 0x1F; break;
+				case '1': PORTB = 0x01; break;
+				case '2': PORTB = 0x02; break;
+				case '3': PORTB = 0x03; break;
+				case '4': PORTB = 0x04; break;
+				case '5': PORTB = 0x05; break;
+				case '6': PORTB = 0x06; break;
+				case '7': PORTB = 0x07; break;
+				case '8': PORTB = 0x08; break;
+				case '9': PORTB = 0x09; break;
+				case 'A': PORTB = 0x0A; break;
+				case 'B': PORTB = 0x0B; break;
+				case 'C': PORTB = 0x0C; break;
+				case 'D': PORTB = 0x0D; break;
+				case '*': PORTB = 0x0E; break;
+				case '0': PORTB = 0x00; break;
+				case '#': PORTB = 0x0F; break;
+				default: PORTB = 0x1B; break;
+			}
+                        break;
+                default:
+                        break;
+	}
+	return state;
+}
+
 int main(void){
-	DDRC = 0x00; PORTC = 0xFF;
+	DDRC = 0xF0; PORTC = 0x0F;
         DDRB = 0xFF; PORTB = 0x00;
         DDRD = 0xFF; PORTD = 0x00;	
 
@@ -70,10 +108,13 @@ int main(void){
 	task1.elapsedTime = task1.period;
 	task1.TickFct = &KeypadSMTick;
 
+	task2.state = -1;
+        task2.period = 50;
+        task2.elapsedTime = task2.period;
+        task2.TickFct = &DisplayDataSMTick;
+
 	TimerSet(50);
 	TimerOn();
-        LCD_init();
-        LCD_ClearScreen();
 
 	unsigned short i;
 	while(1) {
