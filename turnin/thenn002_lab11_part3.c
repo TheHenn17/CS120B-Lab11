@@ -29,12 +29,11 @@ int KeypadSMTick(int state) {
 		case K_Wait:
 			if(input == '\0') {
 				state = K_Wait;
-				break;
 			}
 			else {
 				state = K_Retrieve;
-				break;
 			}
+			break;
 		case K_Retrieve:
 			state = K_Wait;
 			break;
